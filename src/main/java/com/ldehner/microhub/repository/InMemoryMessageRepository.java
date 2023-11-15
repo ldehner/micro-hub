@@ -12,16 +12,20 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 @Repository
 @NonNullApi
 public class InMemoryMessageRepository implements IMessageRepository {
     private static final Logger logger = LogManager.getLogger(InMemoryMessageRepository.class);
-    private final Map<UUID, Message> messages = new ConcurrentHashMap<>();
+    private final ConcurrentNavigableMap<UUID, Message> messages = new ConcurrentSkipListMap<>();
+    private final ConcurrentNavigableMap<Long, Message> sortedMessages = new ConcurrentSkipListMap<>();
 
     @Override
     public <S extends Message> S save(S entity) {
         messages.put(UUID.fromString(entity.getUid()), entity);
+        sortedMessages.put(System.currentTimeMillis(), entity);
         logger.info("Saved message {}", entity.getUid());
         return entity;
     }
@@ -49,7 +53,7 @@ public class InMemoryMessageRepository implements IMessageRepository {
     @Override
     public Iterable<Message> findAll() {
         logger.info("Getting all Messages");
-        return messages.values();
+        return sortedMessages.values();
     }
 
     @Override

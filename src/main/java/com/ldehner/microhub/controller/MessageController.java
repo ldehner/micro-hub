@@ -10,6 +10,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 
 import java.util.UUID;
@@ -32,6 +33,13 @@ public class MessageController {
         logger.info("New message: {}",msg.getContent());
         msg.setUid(UUID.randomUUID().toString());
         return  messageRepository.save(msg);
+    }
+
+    @MessageMapping("/chat.getAllMessages")
+    @SendToUser("/queue/reply")
+    public Iterable<Message> getAllMessages(){
+        logger.info("Get all Messages");
+        return  messageRepository.findAll();
     }
 
     @MessageMapping("/chat.addUser")
