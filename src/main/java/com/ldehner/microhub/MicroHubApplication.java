@@ -1,18 +1,14 @@
 package com.ldehner.microhub;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class MicroHubApplication {
-	private static final Logger logger = LogManager.getLogger(MicroHubApplication.class);
+
 	public static void main(String[] args) {
 		SpringApplication.run(MicroHubApplication.class, args);
-		logger.info("Started Application");
-		logger.info("Waiting for clients to connect");
 	}
-
 }

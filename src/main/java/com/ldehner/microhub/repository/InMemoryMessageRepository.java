@@ -1,9 +1,7 @@
 package com.ldehner.microhub.repository;
 
-import com.ldehner.microhub.controller.MessageController;
 import com.ldehner.microhub.model.Message;
 import io.micrometer.common.lang.NonNullApi;
-import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Repository;
